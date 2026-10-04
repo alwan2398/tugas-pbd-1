@@ -109,7 +109,7 @@ public class Main {
     // ================================================================
     static void tampilkanSelamatDatang() {
         System.out.println("=================================================");
-        System.out.println("    SELAMAT DATANG DI RESTORAN RASA NUSANTARA");
+        System.out.println("    SELAMAT DATANG DI RESTORAN SAYA");
         System.out.println("=================================================");
     }
 
