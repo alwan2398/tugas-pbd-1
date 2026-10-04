@@ -87,3 +87,5 @@ Nasi Padang       2 x Rp 25.000   = Rp 50.000Ayam Bakar        1 x Rp 28.000   =
 Input jumlah harus berupa angka; input non-angka akan menghentikan program.
 Menu yang sama dipesan dua kali akan tercetak sebagai dua baris terpisah(tidak digabung otomatis).
 Karena tanpa perulangan, daftar menu ditampilkan per-index dan pemesanandibatasi tepat 4 baris input.
+
+Terima kasih

@@ -1,32 +1,16 @@
 import java.util.Scanner;
 
-/**
- * ================================================================
- * TUGAS PRAKTIK 1 - PEMROGRAMAN BERBASIS DESKTOP
- * Aplikasi Pemesanan Restoran Sederhana
- *
- * Ketentuan yang dipenuhi:
- * 1. Data menu disimpan dalam Array (array of object).
- * 2. Pemesanan maksimal 4 menu, format "Nama Menu = Jumlah".
- * 3. Pajak 10%, biaya pelayanan Rp 20.000.
- * 4. Diskon 10% : total keseluruhan > Rp 100.000.
- * Beli 1 Gratis 1 : total keseluruhan > Rp 50.000 (minuman).
- * 5. Mencetak struk pesanan lengkap.
- * 6. TANPA struktur pengulangan (for / while / do-while).
- * 7. Menggunakan if, if-else, if-else if, switch case, nested if.
- * ================================================================
- */
 public class Main {
 
     static Scanner input = new Scanner(System.in);
 
-    // ---------- Konstanta (keyword: static final) ----------
-    static final double PAJAK = 0.10; // pajak 10%
-    static final double DISKON = 0.10; // diskon 10%
-    static final int BIAYA_PELAYANAN = 20000; // biaya pelayanan Rp 20.000
-    static final int MAKS_PESANAN = 4; // maksimal 4 menu per pesanan
+    // ---------- Konstanta rumus ----------
+    static final double PAJAK = 0.10;
+    static final double DISKON = 0.10;
+    static final int BIAYA_PELAYANAN = 20000;
+    static final int MAKS_PESANAN = 4;
 
-    // ---------- Array data menu (array of object) ----------
+    // ---------- Array data menu ----------
     static Menu[] menuMakanan = {
             new Menu("Nasi Padang", 25000, "Makanan"),
             new Menu("Nasi Goreng", 20000, "Makanan"),
@@ -41,7 +25,7 @@ public class Main {
             new Menu("Jus Alpukat", 18000, "Minuman")
     };
 
-    // ---------- Array data pesanan (array paralel) ----------
+    // ---------- Array data pesanan paralel----------
     static String[] pesananNama = new String[MAKS_PESANAN];
     static String[] pesananKategori = new String[MAKS_PESANAN];
     static int[] pesananHarga = new int[MAKS_PESANAN];
@@ -75,12 +59,10 @@ public class Main {
                 System.out.print("\nApakah Anda ingin memesan? (y/t) : ");
                 String jawaban = input.nextLine();
 
-                // ===== STRUKTUR KEPUTUSAN: IF-ELSE =====
                 if (jawaban.equalsIgnoreCase("y")) {
                     prosesPemesanan();
                     hitungSubtotal();
 
-                    // ===== IF sederhana: struk hanya dicetak jika ada pesanan =====
                     if (subtotal > 0) {
                         hitungPembayaran();
                         cetakStruk();
@@ -104,18 +86,16 @@ public class Main {
 
     // ================================================================
     // METHOD MENAMPILKAN DATA MENU
-    // Karena dilarang menggunakan perulangan, setiap elemen array
-    // dicetak satu per satu melalui index-nya.
     // ================================================================
     static void tampilkanSelamatDatang() {
         System.out.println("=================================================");
-        System.out.println("    SELAMAT DATANG DI RESTORAN SAYA");
+        System.out.println("    SELAMAT DATANG DI RESTORAN SAYA    ");
         System.out.println("=================================================");
     }
 
     static void tampilkanDaftarMenu() {
         System.out.println("\n------------ DAFTAR MENU RESTORAN ------------");
-        tampilkanMenuMakanan(); // menu dikelompokkan berdasarkan kategori
+        tampilkanMenuMakanan();
         tampilkanMenuMinuman();
         System.out.println("-----------------------------------------------");
     }
@@ -142,7 +122,6 @@ public class Main {
     static Menu cariMenu(String nama) {
         Menu hasil = null;
 
-        // Cari di daftar makanan (if - else if)
         if (nama.equalsIgnoreCase(menuMakanan[0].nama)) {
             hasil = menuMakanan[0];
         } else if (nama.equalsIgnoreCase(menuMakanan[1].nama)) {
@@ -154,8 +133,6 @@ public class Main {
         }
 
         // ===== NESTED IF =====
-        // If luar : jika belum ditemukan di makanan,
-        // If dalam: cari di daftar minuman (if - else if)
         if (hasil == null) {
             if (nama.equalsIgnoreCase(menuMinuman[0].nama)) {
                 hasil = menuMinuman[0];
@@ -168,31 +145,25 @@ public class Main {
             }
         }
 
-        return hasil; // null jika tidak ditemukan
+        return hasil;
     }
 
     // ================================================================
     // METHOD MENGINPUT SATU BARIS PESANAN
-    // Format input: "Nama Menu = Jumlah", contoh: "Nasi Padang = 2"
     // ================================================================
     static void inputSatuPesanan(int nomor) {
         System.out.print("Pesanan ke-" + nomor + " : ");
         String baris = input.nextLine().trim();
 
-        // IF sederhana: lewati jika input kosong
         if (!baris.isEmpty()) {
-            // Pecah input menggunakan method String.split()
             String[] bagian = baris.split("=");
 
-            // IF-ELSE: validasi format input harus "nama = jumlah"
             if (bagian.length == 2) {
                 String nama = bagian[0].trim();
                 int jumlah = Integer.parseInt(bagian[1].trim());
                 Menu dipilih = cariMenu(nama);
 
-                // IF-ELSE: cek apakah menu ditemukan
                 if (dipilih != null) {
-                    // simpan pesanan ke array paralel
                     pesananNama[nomor - 1] = dipilih.nama;
                     pesananKategori[nomor - 1] = dipilih.kategori;
                     pesananHarga[nomor - 1] = dipilih.harga;
@@ -208,7 +179,6 @@ public class Main {
 
     // ================================================================
     // METHOD MEMPROSES SELURUH PESANAN (maksimal 4 menu)
-    // Tanpa perulangan: method inputSatuPesanan dipanggil 4 kali.
     // ================================================================
     static void prosesPemesanan() {
         System.out.println("\n========== FORM PEMESANAN (maks " + MAKS_PESANAN + " menu) ==========");
@@ -225,7 +195,6 @@ public class Main {
 
     // ================================================================
     // METHOD MENGHITUNG SUBTOTAL
-    // Penjumlahan ditulis langsung (tanpa perulangan)
     // ================================================================
     static void hitungSubtotal() {
         subtotal = (pesananJumlah[0] * pesananHarga[0])
@@ -236,7 +205,6 @@ public class Main {
 
     // ================================================================
     // METHOD MENCARI HARGA MINUMAN TERMURAH YANG DIPESAN
-    // (dipakai untuk promo beli 1 gratis 1)
     // ================================================================
     static void cariMinumanTermurah() {
         periksaMinuman(0);
@@ -247,8 +215,6 @@ public class Main {
 
     static void periksaMinuman(int index) {
         // ===== NESTED IF =====
-        // If luar : slot terisi DAN kategorinya minuman
-        // If dalam : harga lebih murah dari yang tersimpan
         if (pesananKategori[index] != null && pesananKategori[index].equalsIgnoreCase("Minuman")) {
             if (hargaMinumanTermurah == 0 || pesananHarga[index] < hargaMinumanTermurah) {
                 hargaMinumanTermurah = pesananHarga[index];
@@ -271,22 +237,15 @@ public class Main {
 
     // ================================================================
     // METHOD MENENTUKAN PROMO
-    // ===== STRUKTUR KEPUTUSAN: IF - ELSE IF =====
-    // Kedua promo TIDAK berlaku bersamaan:
-    // - > Rp 100.000 -> diskon 10%
-    // - > Rp 50.000 -> beli 1 gratis 1 minuman
     // ================================================================
     static void hitungPromo() {
         if (totalKeseluruhan > 100000) {
-            // Diskon 10% dari total keseluruhan
             diskonPromo = totalKeseluruhan * DISKON;
         } else if (totalKeseluruhan > 50000) {
-            // ===== NESTED IF: promo BOGO hanya jika ada minuman dipesan =====
             if (hargaMinumanTermurah > 0) {
-                potonganBogo = hargaMinumanTermurah; // 1 gelas minuman gratis
+                potonganBogo = hargaMinumanTermurah;
             }
         }
-        // else: total <= Rp 50.000 -> tidak mendapat promo
     }
 
     // ================================================================
@@ -295,10 +254,9 @@ public class Main {
     static void cetakStruk() {
         System.out.println("\n=================================================");
         System.out.println("                 STRUK PEMESANAN");
-        System.out.println("             RESTORAN RASA NUSANTARA");
+        System.out.println("                   RESTORAN SAYA");
         System.out.println("=================================================");
 
-        // Cetak hanya slot pesanan yang terisi (tanpa perulangan)
         if (pesananNama[0] != null)
             cetakBarisPesanan(0);
         if (pesananNama[1] != null)
@@ -314,7 +272,6 @@ public class Main {
         System.out.println("Biaya Pelayanan       : " + rupiah(BIAYA_PELAYANAN));
         System.out.println("Total Keseluruhan     : " + rupiah(totalKeseluruhan));
 
-        // IF: tampilkan promo hanya jika ada
         if (diskonPromo > 0) {
             System.out.println("Diskon 10%            : -" + rupiah(diskonPromo));
         }
@@ -328,7 +285,7 @@ public class Main {
         System.out.println("        Terima kasih telah berkunjung!");
     }
 
-    // Method bantu: mencetak satu baris item pesanan
+    // Method mencetak satu baris item pesanan
     static void cetakBarisPesanan(int index) {
         int totalPerItem = pesananJumlah[index] * pesananHarga[index];
         System.out.printf("%-14s %3d x %-10s = %-12s%n",
@@ -340,7 +297,6 @@ public class Main {
 
     // ================================================================
     // METHOD BANTU FORMAT MATA UANG (implementasi String dalam method)
-    // Contoh: 25000 -> "Rp 25.000"
     // ================================================================
     static String rupiah(int angka) {
         return "Rp " + String.format("%,d", angka).replace(',', '.');
